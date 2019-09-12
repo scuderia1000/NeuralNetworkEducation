@@ -36,8 +36,7 @@ class Neuron:
         Возвращает вектор значений сумматорной функции размера (n, 1).
         """
         # Этот метод необходимо реализовать
-
-        pass
+        return input_matrix.dot(self.w)
 
     def activation(self, summatory_activation):
         """
@@ -49,8 +48,7 @@ class Neuron:
         значение активационной функции для i-го примера.
         """
         # Этот метод необходимо реализовать
-
-        pass
+        return self.activation_function(summatory_activation)
 
     def vectorized_forward_pass(self, input_matrix):
         """

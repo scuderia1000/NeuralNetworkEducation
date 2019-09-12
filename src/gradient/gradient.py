@@ -106,7 +106,6 @@ def compute_grad_numerically(neuron, X, y, J=J_quadratic, eps=10e-2):
     return num_grad
 
 
-
 data = np.loadtxt("data.csv", delimiter=",")
 
 # Подготовим данные
@@ -130,4 +129,8 @@ an_grad = compute_grad_analytically(neuron, X, y, J_prime=J_quadratic_derivative
 
 print("Численный градиент: \n", num_grad)
 print("Аналитический градиент: \n", an_grad)
+
+########### Доп задача ###################
+
+##########################################
 
