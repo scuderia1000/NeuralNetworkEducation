@@ -110,27 +110,37 @@ data = np.loadtxt("data.csv", delimiter=",")
 
 # Подготовим данные
 
-X = data[:, :-1]
-y = data[:, -1]
-
-X = np.hstack((np.ones((len(y), 1)), X))
-y = y.reshape((len(y), 1)) # Обратите внимание на эту очень противную и важную строчку
-
-
-# Создадим нейрон
-
-w = np.random.random((X.shape[1], 1))
-
-neuron = Neuron(w, activation_function=sigmoid, activation_function_derivative=sigmoid_prime)
-
-# Посчитаем пример
-num_grad = compute_grad_numerically(neuron, X, y, J=J_quadratic)
-an_grad = compute_grad_analytically(neuron, X, y, J_prime=J_quadratic_derivative)
-
-print("Численный градиент: \n", num_grad)
-print("Аналитический градиент: \n", an_grad)
+# X = data[:, :-1]
+# y = data[:, -1]
+#
+# X = np.hstack((np.ones((len(y), 1)), X))
+# y = y.reshape((len(y), 1)) # Обратите внимание на эту очень противную и важную строчку
+#
+#
+# # Создадим нейрон
+#
+# w = np.random.random((X.shape[1], 1))
+#
+# neuron = Neuron(w, activation_function=sigmoid, activation_function_derivative=sigmoid_prime)
+#
+# # Посчитаем пример
+# num_grad = compute_grad_numerically(neuron, X, y, J=J_quadratic)
+# an_grad = compute_grad_analytically(neuron, X, y, J_prime=J_quadratic_derivative)
+#
+# print("Численный градиент: \n", num_grad)
+# print("Аналитический градиент: \n", an_grad)
 
 ########### Доп задача ###################
+np.random.seed(42)
+n = 10
+m = 5
 
+X = 20 * np.random.sample((n, m)) - 10
+y = (np.random.random(n) < 0.5).astype(np.int)[:, np.newaxis]
+w = 2 * np.random.random((m, 1)) - 1
+
+neuron = Neuron(w)
+neuron.update_mini_batch(X, y, 0.1, 1e-5)
+print(neuron.w)
 ##########################################
 

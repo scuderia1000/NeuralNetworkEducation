@@ -100,4 +100,26 @@ class Neuron:
         """
         # Этот метод необходимо реализовать
 
-        pass
+        # этот метод реализован в gradient.compute_grad_analytically, ну хоть разобрался
+        # def J():
+        #
+        #     S = self.summatory(X)                      # без ф. активации w * X
+        #     y_hat = self.vectorized_forward_pass(X)    # с применением ф.а. к w * X
+        #     dJ_dy_hat = (y_hat - y) / len(y)                # 1 / n * (sigm(w * X)) - 1-я часть градиента
+        #     dy_hat_dS = self.activation_function_derivative(S)
+        #     dS_dw = X
+        #     return ((dJ_dy_hat * dy_hat_dS).T).dot(dS_dw)
+        # grad = J()
+
+        from src.gradient.gradient import compute_grad_analytically
+        from src.gradient.gradient import J_quadratic
+
+        grad = compute_grad_analytically(self, X, y)
+        target_func = J_quadratic(self, X, y)
+        # обновить веса
+        self.w = self.w - (learning_rate * grad)
+        # рассчитать новый градиент, не нужно, т.к. рассчитываем значение целевой ф-ции на новых весах
+        # new_grad = compute_grad_analytically(self, X, y)
+        target_func_new = J_quadratic(self, X, y)
+        # если значение старой целевой ф-ции - значение новой целевой ф-ции < eps, возвращаем 1 иначе 0
+        return int((target_func - target_func_new) < eps)
