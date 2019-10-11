@@ -106,6 +106,45 @@ def compute_grad_numerically(neuron, X, y, J=J_quadratic, eps=10e-2):
     return num_grad
 
 
+def compute_grad_numerically_2(neuron, X, y, J=J_quadratic, eps=10e-2):
+    """
+    Численная производная целевой функции.
+    neuron - объект класса Neuron с вертикальным вектором весов w,
+    X - вертикальная матрица входов формы (n, m), на которой считается сумма квадратов отклонений,
+    y - правильные ответы для тестовой выборки X,
+    J - целевая функция, градиент которой мы хотим получить,
+    eps - размер $\delta w$ (малого изменения весов).
+    """
+
+    # эту функцию необходимо реализовать
+    w_0 = neuron.w
+    num_grad = np.zeros(w_0.shape)
+
+    for i in range(len(w_0)):
+        old_wi = neuron.w[i].copy()
+        # Меняем вес в "+" сторону
+        neuron.w[i] += eps
+
+        # Считаем новое значение целевой функции
+        target_plus = J(neuron, X, y)
+
+        # Возвращаем вес обратно. Лучше так, чем -= eps, чтобы не накапливать ошибки округления
+        neuron.w[i] = old_wi.copy()
+
+        # Меняем вес в "-" сторону
+        neuron.w[i] -= eps
+        # Считаем новое значение целевой функции
+        target_minus = J(neuron, X, y)
+        # вычисляем приближенное значение градиента
+        num_grad[i] = (target_plus - target_minus) / (2 * eps)
+        # Возвращаем вес обратно. Лучше так, чем -= eps, чтобы не накапливать ошибки округления
+        neuron.w[i] = old_wi
+
+    # проверим, что не испортили нейрону веса своими манипуляциями
+    assert np.allclose(neuron.w, w_0), "МЫ ИСПОРТИЛИ НЕЙРОНУ ВЕСА"
+    return num_grad
+
+
 data = np.loadtxt("data.csv", delimiter=",")
 
 # Подготовим данные
@@ -125,7 +164,7 @@ neuron = Neuron(w, activation_function=sigmoid, activation_function_derivative=s
 
 # Посчитаем пример
 # num_grad = compute_grad_numerically(neuron, X, y, J=J_quadratic)
-# an_grad = compute_grad_analytically(neuron, X, y, J_prime=J_quadratic_derivative)
+an_grad = compute_grad_analytically(neuron, X, y, J_prime=J_quadratic_derivative)
 #
 # print("Численный градиент: \n", num_grad)
 # print("Аналитический градиент: \n", an_grad)

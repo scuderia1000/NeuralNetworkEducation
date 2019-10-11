@@ -1,0 +1,39 @@
+import numpy as np
+import math
+from src.gradient.util import sigmoid, sigmoid_prime
+
+X = np.array([[0],
+              [1],
+              [1]])
+W_2 = np.array([[0.7, 0.2, 0.7],
+                [0.8, 0.3, 0.6]])
+W_3 = np.array([[0.2, 0.4]])
+Y = np.array([[1]])
+z_2 = W_2.dot(X)
+# замена ф-ции активации у 1 нейрона на max{x, 0}
+a_2 = np.array([max(z_2[0], 0),
+                sigmoid(z_2[1])])
+print('a_2\n%s' % a_2)
+# a_2 = sigmoid(z_2)
+
+z_3 = W_3.dot(a_2)
+print('z_3\n%s' % z_3)
+a_3 = sigmoid(z_3)
+print('a_3\n%s' % a_3)
+
+delta_3 = ((a_3 - Y) * sigmoid_prime(z_3))
+print('delta_3\n%s' % delta_3)
+
+# производная для max
+prime_z_2_0 = z_2[0] > 0
+# перевод bool в int
+prime_z_2_0 = prime_z_2_0 * 1
+print(prime_z_2_0)
+
+delta_2 = W_3.T.dot(delta_3) * np.array([prime_z_2_0,
+                                         sigmoid_prime(z_2[1])])
+# delta_2 = W_3.T.dot(delta_3) * sigmoid_prime(z_2)
+print('delta_2\n%s' % delta_2)
+
+grad_2 = X.dot(delta_2.T)
+print('grad_2\n%s' % grad_2.T)

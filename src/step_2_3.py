@@ -1,4 +1,5 @@
 import numpy as np
+from src.gradient.util import sigmoid, sigmoid_prime
 
 x = np.array([[1, 1, 1],
               [1, 1, 0],
@@ -25,4 +26,27 @@ for k in range(len(x)):
         delta_y = 0
     for i in range(len(w)):
         w[i] = w[i] + (y[k] - delta_y) * x[k, i]
-print(w)
+# print(w)
+
+w = np.array([[1, 2, 3],
+              [4, 5, 6],
+              [7, 8, 9]])
+# 2 примера
+deltas = np.array([[1, 2, 3],
+                   [4, 5, 6]])
+# print(w.T * deltas)
+# print(sigmoid(1.994))
+z_2 = np.array([[6],
+                [6]])
+X = np.array([[1],
+              [0],
+              [1],
+              [2]])
+delta_2_first = np.array([[-0.013],
+                          [-0.013]])
+sigm_prime_z_2 = sigmoid_prime(z_2)
+deltas_2 = delta_2_first * sigm_prime_z_2
+print(deltas_2)
+grad_2 = X.dot(deltas_2.T)
+print(grad_2)
+
